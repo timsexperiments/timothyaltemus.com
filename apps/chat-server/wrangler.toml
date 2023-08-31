@@ -10,3 +10,7 @@ preview_id = "c677a03ad5334e89b16e01bbcbfb58fd"
 [[durable_objects.bindings]]
 name = "CHAT_DO"
 class_name = "ChatServer"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["ChatServer"]
