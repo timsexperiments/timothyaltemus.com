@@ -1,9 +1,17 @@
 <script>
-	/** @type {import('./$types').ActionData} */
-	export let actions;
+	import AvatarPicker from '$lib/avatar-picker.svelte';
 
-	export let whoErrors = actions?.who?.errors;
-	export let whyErrors = actions?.why?.errors;
+	/** @type {import('./$types').PageData} */
+	export let data;
+
+	/** @type {import('./$types').ActionData} */
+	export let form;
+
+	export let { initialUsername } = data;
+	export let whoErrors = form?.who?.errors;
+	export let whyErrors = form?.why?.errors;
+
+	console.log(form);
 </script>
 
 <div class="flex flex-grow items-center justify-center">
@@ -12,11 +20,11 @@
 			<h1 class="text-base font-semibold leading-6 text-gray-900">Who are you?</h1>
 			<form
 				method="POST"
-				action="?/login"
+				action="/login?/login"
 				class="mt-2 gap-x-2 sm:flex sm:items-end sm:justify-between">
 				<div>
-					<div class="mt-2 grid grid-cols-1 gap-x-2 gap-y-8 sm:grid-cols-6">
-						<div class="sm:col-span-full">
+					<div class="mt-2 grid grid-cols-1 gap-x-2 gap-y-4 sm:grid-cols-6">
+						<div class="group/input sm:col-span-full">
 							<label for="who" class="block text-sm font-medium leading-6 text-gray-900">
 								What should we call you?
 							</label>
@@ -33,22 +41,9 @@
 										autocomplete="username"
 										class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus-within:outline-none focus:ring-0 sm:text-sm sm:leading-6"
 										placeholder="tim"
+										value={initialUsername}
 										aria-describedby="who-helper" />
-									{#if whoErrors?.length}
-										<div
-											class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-											<svg
-												class="h-5 w-5 text-red-500"
-												viewBox="0 0 20 20"
-												fill="currentColor"
-												aria-hidden="true">
-												<path
-													fill-rule="evenodd"
-													d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
-													clip-rule="evenodd" />
-											</svg>
-										</div>
-									{/if}
+									<AvatarPicker />
 								</div>
 								{#if whoErrors?.length}
 									<p class="mt-2 text-sm text-red-600" id="who-helper">{whoErrors[0]}</p>

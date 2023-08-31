@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+
+package chat;
+
+// A specific chat room.
+message Chat {
+    // Messages sent in the chat room.
+    repeated Message messages = 1;
+}
+
+// Memebers of the chat.
+message ChatMemebers {
+    // Users that are currently online in the chat.
+    repeated User online_users = 1; 
+}
+
+// A message in the chat room.
+message Message {
+    string id = 1;
+    // User sending the message.
+    User author = 2;
+    // String content of a message.
+    string content = 3;
+    // Message the the message is a direct reply from.
+    optional Message reply_from = 4;
+    // The time the message was created.
+    google.protobuf.Timestamp created_at = 5;
+    // The time the message was edited.
+    optional google.protobuf.Timestamp edited_at = 6;
+}
+
+// A user in the chat application.
+message User {
+    // The username of the User.
+    string username = 1;
+    // The avatar of the User.
+    string avatar = 2;
+}
+
+// Event from the chat client to send in the chat server.
+message ServerEvent {
+    // Types of chat events.
+    enum Type {
+        // Unknown event type.
+        EVENT_TYPE_UNSPECIFIED = 0;
+        // A liked event.
+        REACT = 1;
+        // A send message event.
+        MESSAGE = 2;
+        // An edit message event.
+        EDIT = 3;
+        // An event related to user Typing.
+        TYPING = 4;
+        // A user left event.
+        LEAVE = 5;
+        // A user join event.
+        JOIN = 6;
+    }
+    // The type of the particular event.
+    Type type = 1;
+    // The User who triggered the event.
+    User acting_user = 2;
+    // The message associated with the event.
+    optional Message message = 3;
+    // Metadata for the message.
+    map<string, string> metadata = 4;
+}
+
+// Events from the chat server to be consumed be the chat client.
+message ClientEvent {
+    // A type of a client event.
+    enum Type {
+        // No client event type was specified.
+        CLIENT_EVENT_TYPE_UNSPECIFIED = 0;
+        // Chat should be updated.
+        CHAT = 1;
+        // Chat members should be updated.
+        MEMBERS = 2;
+        // A typing should be displayed.
+        TYPING = 3;
+    }
+    // The type of the Client Event.
+    Type type = 1;
+    // Metadata for a client event.
+    optional google.protobuf.Any metadata = 2;
+}

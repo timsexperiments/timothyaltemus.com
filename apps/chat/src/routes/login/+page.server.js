@@ -1,34 +1,74 @@
-import { error, redirect } from '@sveltejs/kit';
+import { AVATARS, PLATFORM_ERROR } from '$lib/server/constants';
+import { getOnlineUsers } from '$lib/server/kv';
+import { redirect } from '@sveltejs/kit';
 import z from 'zod';
+
+const CHAT_REDIRECT = redirect(303, `/chat`);
+const USER_EXISTS_ERROR = 'There is already a user online with that username.';
+
+/** @satisfies {import('./$types').PageServerLoad} */
+export const load = async ({ platform, cookies }) => {
+	if (!platform || !platform.env) {
+		throw PLATFORM_ERROR;
+	}
+
+	/** @type {User} */
+	const savedUser = JSON.parse(cookies.get('user') ?? '{}');
+	/** @type {User[]} */
+	const onlineUsers = await getOnlineUsers(platform.env.CHAT_KV);
+	if (onlineUsers.map(({ username }) => username).includes(savedUser.username)) {
+		return {
+			initialUsername: savedUser.username,
+			initialAvatar: savedUser.avatar,
+			who: { errors: [USER_EXISTS_ERROR] },
+			why: { errors: [] },
+		};
+	}
+	if (savedUser && savedUser.username && savedUser.avatar) {
+		throw CHAT_REDIRECT;
+	}
+	return { initialUsername: '', initialAvatar: 'basic' };
+};
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-	login: async ({ platform, request }) => {
+	login: async ({ platform, request, cookies }) => {
+		console.log('here');
 		if (!platform || !platform.env) {
-			throw error(500, { message: 'Platform was not found.', code: 'Internal Error' });
+			throw PLATFORM_ERROR;
 		}
-		/** @type {string[]} */
-		const existingUsernames = JSON.parse((await platform.env.CHAT_KV?.get('online_users')) ?? '[]');
+		/** @type {User[]} */
+		const onlineUsers = await getOnlineUsers(platform.env.CHAT_KV);
+
 		const formValidator = z.object({
 			who: z
 				.string()
+				.min(1, 'A username is required')
 				.refine(
-					(who) => !existingUsernames.includes(who),
-					'There is already a user with that name.',
+					(who) => !onlineUsers.map(({ username }) => username).includes(who),
+					USER_EXISTS_ERROR,
 				),
+			avatar: z.enum(AVATARS),
 			why: z.string().min(1, 'The reason is required.'),
 		});
 
-		const formData = await request.json();
-
-		const parsed = formValidator.safeParse(formData);
+		const formData = await request.formData();
+		const parsed = formValidator.safeParse({
+			who: formData.get('who'),
+			avatar: formData.get('avatar'),
+			why: formData.get('why'),
+		});
 		if (parsed.success) {
 			const user = { who: parsed.data.who, why: parsed.data.why };
 			/** @type {string[]} */
 			const visitors = JSON.parse((await platform.env.CHAT_KV.get('visitors')) ?? '[]');
 			visitors.push(JSON.stringify(user));
 			await platform.env.CHAT_KV.put('visitors', JSON.stringify(Array.from(new Set(visitors))));
-			throw redirect(303, `/chat?user=${user.who}`);
+			cookies.set('user', JSON.stringify({ username: user.who, avatar: 'basic' }), {
+				httpOnly: true,
+				sameSite: true,
+			});
+			throw CHAT_REDIRECT;
 		}
 		const errors = parsed.error.flatten().fieldErrors;
 		return { who: { errors: errors.who }, why: { errors: errors.why } };

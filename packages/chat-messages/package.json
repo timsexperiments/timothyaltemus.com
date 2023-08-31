@@ -1,0 +1,36 @@
+{
+  "name": "chat-messages",
+  "description": "",
+  "module": "esm/index.js",
+  "main": "cjs/index.js",
+  "types": "types/index.ts",
+  "files": [
+    "build",
+    "src/**/*.d.ts"
+  ],
+  "scripts": {
+    "gen": "pnpm gen:setup && pnpm gen:js && pnpm gen:ts",
+    "build": "pnpm gen && pnpm build:setup && pnpm build:only",
+    "build:only": "pnpm build:types & pnpm build:esm & pnpm build:cjs",
+    "build:esm": "swc src --config-file .swc.esm.json -d esm --ignore **/*.d.ts",
+    "build:cjs": "swc src --config-file .swc.cjs.json -d cjs --ignore **/*.d.ts",
+    "build:types": "tsc & pbts -o types/generated/chat.d.ts src/generated/chat.js",
+    "build:setup": "node scripts/clean ./cjs ./esm ./types && node scripts/mkdir ./types/generated",
+    "gen:setup": "node scripts/clean ./src/generated && node scripts/mkdir ./src/generated",
+    "gen:js": "pbjs -t static-module -w es6 -o src/generated/chat.js src/proto/chat.proto",
+    "gen:ts": "pbts -o src/generated/chat.d.ts src/generated/chat.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@swc/cli": "^0.1.62",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "chat-messages": "workspace:^",
+    "long": "^5.2.3",
+    "protobufjs": "^7.2.5",
+    "protobufjs-cli": "^1.1.2"
+  }
+}

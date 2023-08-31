@@ -10,5 +10,5 @@ compatibility_date = "2021-11-12"
 workers_dev = true
 
 kv_namespaces = [
-    { binding = "CHAT_KV", id = "abf2d475b9f74d4bb4e67defcdf97e12" },
+    { binding = "CHAT_KV", id = "abf2d475b9f74d4bb4e67defcdf97e12", preview_id = "c677a03ad5334e89b16e01bbcbfb58fd" },
 ]
