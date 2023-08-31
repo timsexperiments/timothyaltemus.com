@@ -1,7 +1,7 @@
 <script>
+  import { AVATARS } from '../constants';
   import Avatar from './avatar.svelte';
   import InputDropdown from './input-dropdown.svelte';
-  import { AVATARS } from './server/constants';
 
   /** @type {globalThis.Avatar} */
   let avatar = 'basic';
