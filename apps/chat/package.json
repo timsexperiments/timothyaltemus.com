@@ -35,5 +35,9 @@
 		"vitest": "^0.34.0",
 		"zod": "^3.22.2"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"chat-messages": "workspace:^",
+		"rxjs": "^7.8.1"
+	}
 }

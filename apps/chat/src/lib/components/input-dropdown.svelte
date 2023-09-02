@@ -4,8 +4,6 @@
   function toggle() {
     expanded = !expanded;
   }
-
-  $: console.log(expanded);
 </script>
 
 <div class="relative inline-block text-left">

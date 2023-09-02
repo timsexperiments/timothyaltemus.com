@@ -10,8 +10,6 @@
   export let { initialUsername } = data;
   export let whoErrors = form?.who?.errors;
   export let whyErrors = form?.why?.errors;
-
-  console.log(form);
 </script>
 
 <div class="flex flex-grow items-center justify-center">

@@ -1,14 +1,15 @@
 name = "timothyaltemus-com"
 account_id = "1a66b26d982caf9ca173ed25da57a37a"
 
-main = "./.cloudflare/worker.js"
-site.bucket = "./.cloudflare/public"
+[site]
+bucket = "./.svelte-kit/cloudflare/_app/immutable/assets"
 
-build.command = "npm run build"
+build.command = "pnpm build"
 
 compatibility_date = "2021-11-12"
 workers_dev = true
 
-kv_namespaces = [
-    { binding = "CHAT_KV", id = "abf2d475b9f74d4bb4e67defcdf97e12", preview_id = "c677a03ad5334e89b16e01bbcbfb58fd" },
-]
+[[kv_namespaces]]
+binding = "CHAT_KV"
+id = "abf2d475b9f74d4bb4e67defcdf97e12"
+preview_id = "c677a03ad5334e89b16e01bbcbfb58fd"
