@@ -42,6 +42,7 @@
     "chat-messages": "workspace:^",
     "emoji-mart": "^5.5.2",
     "flowbite-svelte": "^0.44.4",
+    "pnpm": "^8.7.1",
     "rxjs": "^7.8.1"
   }
 }
