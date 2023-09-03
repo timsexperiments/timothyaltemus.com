@@ -1,10 +1,8 @@
 import { AVATARS } from '$lib/constants';
-import { PLATFORM_ERROR } from '$lib/server/constants';
+import { CHAT_REDIRECT, PLATFORM_ERROR } from '$lib/server/constants';
 import { getMembers as getChatMembers } from '$lib/server/kv';
-import { redirect } from '@sveltejs/kit';
 import z from 'zod';
 
-const CHAT_REDIRECT = redirect(303, `/chat`);
 const USER_EXISTS_ERROR = 'There is already a user online with that username.';
 
 /** @satisfies {import('./$types').PageServerLoad} */
@@ -33,6 +31,10 @@ export const load = async ({ platform, cookies }) => {
 /** @type {import('./$types').Actions} */
 export const actions = {
   login: async ({ platform, request, cookies }) => {
+    if (platform) {
+      console.log(Object.keys(platform.env ?? {}));
+      console.log(platform.env);
+    }
     if (!platform || !platform.env) {
       throw PLATFORM_ERROR;
     }

@@ -1,8 +1,5 @@
-import { PLATFORM_ERROR } from '$lib/server/constants';
+import { LOGIN_REDIRECT, PLATFORM_ERROR } from '$lib/server/constants';
 import { getChat, getMembers } from '$lib/server/kv';
-import { redirect } from '@sveltejs/kit';
-
-const LOGIN_REDIRECT = redirect(303, '/login');
 
 /** @satisfies {import('./$types').PageServerLoad} */
 export const load = async ({ platform, cookies }) => {
