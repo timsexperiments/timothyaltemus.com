@@ -130,9 +130,6 @@ importers:
 
   packages/chat-messages:
     dependencies:
-      chat-messages:
-        specifier: workspace:^
-        version: 'link:'
       long:
         specifier: ^5.2.3
         version: 5.2.3
