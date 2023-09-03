@@ -2,7 +2,10 @@
   import Avatar from '$lib/components/avatar.svelte';
   import Profile from '$lib/components/profile.svelte';
   import { formatDate } from '$lib/date';
+  import emojiData from '@emoji-mart/data';
   import { toDate } from 'chat-messages';
+  import { Picker } from 'emoji-mart';
+  import { Popover } from 'flowbite-svelte';
   import { onMount } from 'svelte';
   import ChatClient from './chat';
 
@@ -12,10 +15,14 @@
   /** @type {ChatClient | undefined}*/
   let chatClient;
   /** @type {string} */
-  let message;
+  let message = '';
   let reloadingMembers = false;
   /** @type {HTMLFormElement} */
   let form;
+  /** @type {HTMLDivElement} */
+  let emojiTarget;
+  /** @type {HTMLElement & Picker} */
+  let emojiPicker;
 
   /** @type {import('svelte/store').Writable<import('chat-messages').Message[]>} */
   let messages;
@@ -32,6 +39,15 @@
     messages = chatClient.messages;
     members = chatClient.members;
     isConnected = chatClient.isConnected;
+
+    // @ts-ignore
+    emojiPicker = new Picker({
+      data: emojiData,
+      onEmojiSelect: (/** @type {{native: string}} */ data) => {
+        message = message + data.native;
+      },
+      theme: 'light',
+    });
   });
 
   $: if (chatClient) {
@@ -42,6 +58,9 @@
 
   $: hasMessages = $messages?.length;
   $: hasMembers = $members?.length;
+  $: if (emojiTarget) {
+    emojiTarget.appendChild(emojiPicker);
+  }
 
   function sendMessage() {
     chatClient?.sendMessage(message);
@@ -116,6 +135,9 @@
   <main class="h-full py-10 pl-72">
     <div class="flex h-full flex-col-reverse">
       <form bind:this={form} class="flex w-full gap-2 p-2" on:submit|preventDefault={sendMessage}>
+        <Popover trigger="click" triggeredBy="#emoji-button" class="border-none bg-transparent">
+          <div bind:this={emojiTarget}></div>
+        </Popover>
         <div class="flex-1 space-y-2">
           <div
             class="flex rounded-md border border-stone-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-950 focus-visible:ring-offset-2">
@@ -128,9 +150,11 @@
               aria-invalid="false" />
             <button
               type="button"
+              id="emoji-button"
               aria-haspopup="dialog"
               aria-expanded="false"
               data-state="closed"
+              disabled={!$isConnected}
               class="px-2 text-stone-500 disabled:cursor-not-allowed disabled:text-stone-500/60">
               <svg
                 class="h-6 w-6"

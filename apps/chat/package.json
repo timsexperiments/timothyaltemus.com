@@ -41,6 +41,7 @@
     "@emoji-mart/data": "^1.1.2",
     "chat-messages": "workspace:^",
     "emoji-mart": "^5.5.2",
+    "flowbite-svelte": "^0.44.4",
     "rxjs": "^7.8.1"
   }
 }
