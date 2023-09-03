@@ -19,7 +19,7 @@
     </h2>
   </div>
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" method="POST" action="/login?/login">
+    <form class="space-y-6" method="POST" action="?/login">
       <div class="space-y-2">
         <label
           class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
