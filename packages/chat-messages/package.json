@@ -28,7 +28,6 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "chat-messages": "workspace:^",
     "long": "^5.2.3",
     "protobufjs": "^7.2.5",
     "protobufjs-cli": "^1.1.2"
