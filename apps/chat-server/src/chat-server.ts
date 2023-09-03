@@ -91,6 +91,7 @@ export class ChatServer {
 		});
 		session.socket.addEventListener('message', async ({ data }) => {
 			const event = deserializeServerEvent(data.toString());
+			console.log('Recieved a', event.type, 'event');
 			switch (event.type) {
 				case ServerEventType.MESSAGE: {
 					const chat = deserializeChat((await this.env.CHAT_KV.get(CHAT_KV_KEY))!);

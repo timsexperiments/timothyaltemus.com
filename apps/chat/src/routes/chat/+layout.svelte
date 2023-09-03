@@ -1,3 +1,5 @@
+<slot />
+
 <style>
   :global(html) {
     @apply h-full bg-white;

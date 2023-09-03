@@ -1,43 +1,46 @@
 {
-	"name": "chat",
-	"version": "0.0.1",
-	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"preview": "vite preview",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
-		"test": "vitest",
-		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
-	},
-	"devDependencies": {
-		"@cloudflare/workers-types": "^4.20230821.0",
-		"@fontsource/fira-mono": "^4.5.10",
-		"@neoconfetti/svelte": "^1.0.0",
-		"@sveltejs/adapter-auto": "^2.0.0",
-		"@sveltejs/adapter-cloudflare": "^2.3.3",
-		"@sveltejs/kit": "^1.20.4",
-		"@types/cookie": "^0.5.1",
-		"autoprefixer": "^10.4.15",
-		"eslint": "^8.28.0",
-		"eslint-config-prettier": "^8.5.0",
-		"eslint-plugin-svelte": "^2.30.0",
-		"postcss": "^8.4.28",
-		"prettier": "^3.0.2",
-		"prettier-plugin-svelte": "^3.0.3",
-		"prettier-plugin-tailwindcss": "^0.5.3",
-		"svelte": "^4.0.5",
-		"svelte-check": "^3.4.3",
-		"tailwindcss": "^3.3.3",
-		"typescript": "^5.0.2",
-		"vite": "^4.4.2",
-		"vitest": "^0.34.0",
-		"zod": "^3.22.2"
-	},
-	"type": "module",
-	"dependencies": {
-		"chat-messages": "workspace:^",
-		"rxjs": "^7.8.1"
-	}
+  "name": "chat",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "wrangler pages dev .svelte-kit/cloudflare",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+    "test": "vitest",
+    "lint": "prettier --plugin-search-dir . --check . && eslint .",
+    "format": "prettier --plugin-search-dir . --write ."
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230821.0",
+    "@fontsource/fira-mono": "^4.5.10",
+    "@neoconfetti/svelte": "^1.0.0",
+    "@sveltejs/adapter-auto": "^2.0.0",
+    "@sveltejs/adapter-cloudflare": "^2.3.3",
+    "@sveltejs/kit": "^1.20.4",
+    "@types/cookie": "^0.5.1",
+    "autoprefixer": "^10.4.15",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-svelte": "^2.30.0",
+    "postcss": "^8.4.28",
+    "prettier": "^3.0.2",
+    "prettier-plugin-svelte": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.3",
+    "svelte": "^4.0.5",
+    "svelte-check": "^3.4.3",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.2",
+    "vitest": "^0.34.0",
+    "wrangler": "^3.6.0",
+    "zod": "^3.22.2"
+  },
+  "type": "module",
+  "dependencies": {
+    "@emoji-mart/data": "^1.1.2",
+    "chat-messages": "workspace:^",
+    "emoji-mart": "^5.5.2",
+    "rxjs": "^7.8.1"
+  }
 }

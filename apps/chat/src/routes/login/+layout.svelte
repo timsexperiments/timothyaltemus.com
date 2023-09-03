@@ -2,7 +2,7 @@
 </script>
 
 <div class="flex min-h-screen w-full flex-col">
-  <main class="flex w-full flex-grow items-stretch">
+  <main class="flex w-full w-full flex-grow items-stretch">
     <slot />
   </main>
 

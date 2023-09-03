@@ -56,12 +56,12 @@ export const actions = {
       why: formData.get('why'),
     });
     if (parsed.success) {
-      const user = { who: parsed.data.who, why: parsed.data.why };
+      const user = { who: parsed.data.who, why: parsed.data.why, avatar: parsed.data.avatar };
       /** @type {string[]} */
       const visitors = JSON.parse((await platform.env.CHAT_KV.get('visitors')) ?? '[]');
       visitors.push(JSON.stringify(user));
       await platform.env.CHAT_KV.put('visitors', JSON.stringify(Array.from(new Set(visitors))));
-      cookies.set('user', JSON.stringify({ username: user.who, avatar: 'basic' }), {
+      cookies.set('user', JSON.stringify({ username: user.who, avatar: user.avatar }), {
         httpOnly: true,
         sameSite: true,
       });

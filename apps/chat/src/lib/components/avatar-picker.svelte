@@ -26,7 +26,8 @@
     {#each AVATARS as avatar}
       <button
         type="button"
-        class="flex w-full justify-center p-2 hover:bg-slate-200"
+        tabindex={isExpanded ? 0 : -1}
+        class="flex w-full justify-center rounded-md p-2 ring-inset focus-within:ring-2 focus-within:ring-lime-600 hover:bg-slate-200"
         on:click={() => select(avatar)}>
         <Avatar {avatar} />
       </button>

@@ -70,7 +70,7 @@ export class WebSocketServer {
 		});
 
 		socket.addEventListener('error', async (event) => {
-			console.error(event);
+			console.error('An error occurred:', event);
 		});
 
 		if (this.onJoin) {

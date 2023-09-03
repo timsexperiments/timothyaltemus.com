@@ -12,70 +12,81 @@
   export let whyErrors = form?.why?.errors;
 </script>
 
-<div class="flex flex-grow items-center justify-center">
-  <div class="max-w-md bg-white shadow sm:rounded-lg">
-    <div class="px-4 py-5 sm:p-6">
-      <h1 class="text-base font-semibold leading-6 text-gray-900">Who are you?</h1>
-      <form
-        method="POST"
-        action="/login?/login"
-        class="mt-2 gap-x-2 sm:flex sm:items-end sm:justify-between">
-        <div>
-          <div class="mt-2 grid grid-cols-1 gap-x-2 gap-y-4 sm:grid-cols-6">
-            <div class="group/input sm:col-span-full">
-              <label for="who" class="block text-sm font-medium leading-6 text-gray-900">
-                What should we call you?
-              </label>
-              <div class="mt-2">
-                <div
-                  class="relative flex w-full rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:outline-none focus-within:ring-2 focus-within:ring-inset focus-within:ring-lime-600 sm:max-w-md">
-                  <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">
-                    @
-                  </span>
-                  <input
-                    type="text"
-                    name="who"
-                    id="who"
-                    autocomplete="username"
-                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus-within:outline-none focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="tim"
-                    value={initialUsername}
-                    aria-describedby="who-helper" />
-                  <AvatarPicker />
-                </div>
-                {#if whoErrors?.length}
-                  <p class="mt-2 text-sm text-red-600" id="who-helper">{whoErrors[0]}</p>
-                {/if}
-              </div>
-            </div>
-            <div class="col-span-full">
-              <label for="why" class="block text-sm font-medium leading-6 text-gray-900">
-                Why are you here?
-              </label>
-              <div class="mt-2">
-                <textarea
-                  id="why"
-                  name="why"
-                  rows="3"
-                  class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus-within:outline-none focus:ring-2 focus:ring-inset focus:ring-lime-600 sm:text-sm sm:leading-6"
-                ></textarea>
-              </div>
-
-              <p class="mt-2 text-sm text-gray-600" class:text-red-600={whyErrors?.length}>
-                {whyErrors?.length ? whyErrors[0] : 'Write a few sentences about yourself.'}
-              </p>
-            </div>
-          </div>
+<div class="flex min-h-full w-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+    <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+      Join the chat server
+    </h2>
+  </div>
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <form class="space-y-6" method="POST" action="/login?/login">
+      <div class="space-y-2">
+        <label
+          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          for="who">
+          What should we call you?
+        </label>
+        <div
+          class="relative flex w-full rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:outline-none focus-within:ring-2 focus-within:ring-inset focus-within:ring-lime-600 sm:max-w-md">
+          <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm"> @ </span>
+          <input
+            type="text"
+            name="who"
+            id="who"
+            autocomplete="username"
+            class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus-within:outline-none focus:ring-0 sm:text-sm sm:leading-6"
+            placeholder="tim"
+            value={initialUsername}
+            aria-describedby="who-helper" />
+          <AvatarPicker />
         </div>
-        <div class="mt-5 sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
-          <button
-            type="submit"
-            class="inline-flex items-center rounded-md bg-lime-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lime-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-500">
-            Join
-          </button>
-        </div>
-      </form>
-    </div>
+        <p
+          id="who-description"
+          class:text-red-600={whoErrors?.length}
+          class="text-sm text-stone-500">
+          {#if whoErrors?.length}whoErrors[0]{:else}This is your public display name.{/if}
+        </p>
+      </div>
+      <div class="space-y-2">
+        <label
+          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          for="why">
+          Why are you here?
+        </label>
+        <textarea
+          id="why"
+          name="why"
+          aria-describedby="why-description"
+          rows="3"
+          class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus-within:outline-none focus:ring-2 focus:ring-inset focus:ring-lime-600 sm:text-sm sm:leading-6"
+        ></textarea>
+        <p
+          id="why-description"
+          class:text-red-600={whyErrors?.length}
+          class="text-sm text-stone-500">
+          {#if whyErrors?.length}
+            {whyErrors[0]}
+          {:else}
+            Write a few sentences about yourself
+          {/if}
+        </p>
+      </div>
+      <div>
+        <button
+          class="flex h-10 w-full items-center justify-center rounded-md bg-lime-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm ring-offset-white transition-colors hover:bg-lime-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600 focus-visible:ring-2 focus-visible:ring-stone-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+          type="submit">
+          Join
+        </button>
+      </div>
+    </form>
+    {#if initialUsername}
+      <p class="mt-10 text-center text-sm text-gray-500">
+        Are you {initialUsername}?&nbsp;
+        <a href="/chat" class="font-semibold leading-6 text-lime-600 hover:text-lime-500">
+          Go to the chat!
+        </a>
+      </p>
+    {/if}
   </div>
 </div>
 
