@@ -87,8 +87,8 @@ export const serializeMessage = (message: Message) => {
  *
  * The serialized message must represent a Chat proto.
  */
-export const deserializeChat = (serialized: string) => {
-  return Chat.toObject(Chat.decode(Uint8Array.from(serializedStringToUInt8(serialized))));
+export const deserializeChat = (serialized: string): Chat => {
+  return Chat.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 };
 
 /**
@@ -96,10 +96,8 @@ export const deserializeChat = (serialized: string) => {
  *
  * The serialized message must represent a ChatMembers proto.
  */
-export const deserializeChatMembers = (serialized: string) => {
-  return ChatMembers.toObject(
-    ChatMembers.decode(Uint8Array.from(serializedStringToUInt8(serialized))),
-  );
+export const deserializeChatMembers = (serialized: string): ChatMembers => {
+  return ChatMembers.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 };
 
 /**
@@ -107,10 +105,8 @@ export const deserializeChatMembers = (serialized: string) => {
  *
  * The serialized message must represent an Event proto.
  */
-export function deserializeServerEvent(serialized: string) {
-  return ServerEvent.toObject(
-    ServerEvent.decode(Uint8Array.from(serializedStringToUInt8(serialized))),
-  );
+export function deserializeServerEvent(serialized: string): ServerEvent {
+  return ServerEvent.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 }
 
 /**
@@ -118,10 +114,8 @@ export function deserializeServerEvent(serialized: string) {
  *
  * The serialized message must represent an Event proto.
  */
-export function deserializeClientEvent(serialized: string) {
-  return ClientEvent.toObject(
-    ClientEvent.decode(Uint8Array.from(serializedStringToUInt8(serialized))),
-  );
+export function deserializeClientEvent(serialized: string): ClientEvent {
+  return ClientEvent.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 }
 
 /**
@@ -129,8 +123,8 @@ export function deserializeClientEvent(serialized: string) {
  *
  * The serialized message must represent a Message proto.
  */
-export function deserializeMessage(serialized: string) {
-  return Message.toObject(Message.decode(Uint8Array.from(serializedStringToUInt8(serialized))));
+export function deserializeMessage(serialized: string): Message {
+  return Message.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 }
 
 /**
@@ -138,8 +132,8 @@ export function deserializeMessage(serialized: string) {
  *
  * The serialized message must represent a User proto.
  */
-export function deserializeUser(serialized: string) {
-  return User.toObject(User.decode(Uint8Array.from(serializedStringToUInt8(serialized))));
+export function deserializeUser(serialized: string): User {
+  return User.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 }
 
 /** Converts a string to the UInt8 array. */

@@ -38,14 +38,16 @@ export class ChatServer {
 		this.server = new WebSocketServer({
 			onJoin: async (server, { session }) => {
 				const members = deserializeChatMembers((await this.env.CHAT_KV.get(MEMBERS_KV_KEY))!);
-				members.onlineUsers.push(session.user);
+				members.onlineUsers?.push(session.user);
 				await this.env.CHAT_KV.put(MEMBERS_KV_KEY, serializeChatMembers(members));
 				server.broadcast(createClientEvent({ type: ClientEventType.MEMBERS }));
 			},
 			onLeave: async (server, { session }) => {
 				const users = deserializeChatMembers((await this.env.CHAT_KV.get(MEMBERS_KV_KEY))!);
 				const newUsers = createChatMembers({
-					onlineUsers: users.onlineUsers.filter((user) => user.username !== session.user.username),
+					onlineUsers: (users.onlineUsers ?? []).filter(
+						(user) => user.username !== session.user.username,
+					),
 				});
 				await this.env.CHAT_KV.put(MEMBERS_KV_KEY, serializeChatMembers(newUsers));
 				server.broadcast(createClientEvent({ type: ClientEventType.MEMBERS }));
@@ -101,7 +103,7 @@ export class ChatServer {
 						content: event.message?.content,
 						createdAt: new Date(),
 					});
-					chat.messages.push(newMessage);
+					chat.messages?.push(newMessage);
 					await this.env.CHAT_KV.put(CHAT_KV_KEY, serializeChat(chat));
 					this.server.brodcastWithoutSessions(createClientEvent({ type: ClientEventType.CHAT }), [
 						session,
@@ -110,7 +112,7 @@ export class ChatServer {
 				}
 				case ServerEventType.EDIT: {
 					const chat = deserializeChat((await this.env.CHAT_KV.get(CHAT_KV_KEY))!);
-					const message = chat.messages.find((message) => message.id === event.message?.id);
+					const message = chat.messages?.find((message) => message.id === event.message?.id);
 					if (!message) {
 						throw new Error(`Message ${event.message?.id} does not exist.`);
 					}
