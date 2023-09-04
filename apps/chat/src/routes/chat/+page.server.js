@@ -7,9 +7,11 @@ export const load = async ({ platform, cookies }) => {
     throw PLATFORM_ERROR;
   }
 
-  const { messages = [] } = await getChat(platform.env.CHAT_KV);
+  const chat = await getChat(platform.env.CHAT_KV);
+  const messages = (chat.messages ?? []).map((message) => message);
 
-  const { onlineUsers = [] } = await getMembers(platform.env.CHAT_KV);
+  const members = await getMembers(platform.env.CHAT_KV);
+  const onlineUsers = (members.onlineUsers ?? []).map((member) => member);
 
   /** @type {User} */
   const user = JSON.parse(cookies.get('user') ?? '{}');

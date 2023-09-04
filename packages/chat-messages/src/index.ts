@@ -1,8 +1,8 @@
 import { chat, google } from './generated/chat';
 
-const { Chat, ChatMemebers, ClientEvent, Message, ServerEvent, User } = chat;
+const { Chat, ChatMembers, ClientEvent, Message, ServerEvent, User } = chat;
 export type Chat = chat.IChat;
-export type ChatMembers = chat.IChatMemebers;
+export type ChatMembers = chat.IChatMembers;
 export type ClientEvent = chat.IClientEvent;
 export type Message = chat.IMessage;
 export type ServerEvent = chat.IServerEvent;
@@ -23,7 +23,7 @@ export {
 export const createChat = Chat.create;
 
 /** Creates a chat members proto. */
-export const createChatMembers = ChatMemebers.create;
+export const createChatMembers = ChatMembers.create;
 
 /** Creates a server event proto to send to the client. */
 export const createClientEvent = ClientEvent.create;
@@ -59,7 +59,7 @@ export const serializeChat = (chat: Chat) => {
 
 /** Serializes a ChatMembers proto into a string. */
 export const serializeChatMembers = (chatMembers: ChatMembers) => {
-  return String.fromCharCode(...ChatMemebers.encode(chatMembers).finish());
+  return String.fromCharCode(...ChatMembers.encode(chatMembers).finish());
 };
 
 /** Serializes a ServerEvent proto into a string. */
@@ -88,7 +88,7 @@ export const serializeMessage = (message: Message) => {
  * The serialized message must represent a Chat proto.
  */
 export const deserializeChat = (serialized: string) => {
-  return Chat.decode(Uint8Array.from(serializedStringToUInt8(serialized)));
+  return Chat.toObject(Chat.decode(Uint8Array.from(serializedStringToUInt8(serialized))));
 };
 
 /**
@@ -97,7 +97,9 @@ export const deserializeChat = (serialized: string) => {
  * The serialized message must represent a ChatMembers proto.
  */
 export const deserializeChatMembers = (serialized: string) => {
-  return ChatMemebers.decode(Uint8Array.from(serializedStringToUInt8(serialized)));
+  return ChatMembers.toObject(
+    ChatMembers.decode(Uint8Array.from(serializedStringToUInt8(serialized))),
+  );
 };
 
 /**
@@ -106,7 +108,9 @@ export const deserializeChatMembers = (serialized: string) => {
  * The serialized message must represent an Event proto.
  */
 export function deserializeServerEvent(serialized: string) {
-  return ServerEvent.decode(Uint8Array.from(serializedStringToUInt8(serialized)));
+  return ServerEvent.toObject(
+    ServerEvent.decode(Uint8Array.from(serializedStringToUInt8(serialized))),
+  );
 }
 
 /**
@@ -115,7 +119,9 @@ export function deserializeServerEvent(serialized: string) {
  * The serialized message must represent an Event proto.
  */
 export function deserializeClientEvent(serialized: string) {
-  return ClientEvent.decode(Uint8Array.from(serializedStringToUInt8(serialized)));
+  return ClientEvent.toObject(
+    ClientEvent.decode(Uint8Array.from(serializedStringToUInt8(serialized))),
+  );
 }
 
 /**
@@ -124,7 +130,7 @@ export function deserializeClientEvent(serialized: string) {
  * The serialized message must represent a Message proto.
  */
 export function deserializeMessage(serialized: string) {
-  return Message.decode(Uint8Array.from(serializedStringToUInt8(serialized)));
+  return Message.toObject(Message.decode(Uint8Array.from(serializedStringToUInt8(serialized))));
 }
 
 /**
@@ -133,7 +139,7 @@ export function deserializeMessage(serialized: string) {
  * The serialized message must represent a User proto.
  */
 export function deserializeUser(serialized: string) {
-  return User.decode(Uint8Array.from(serializedStringToUInt8(serialized)));
+  return User.toObject(User.decode(Uint8Array.from(serializedStringToUInt8(serialized))));
 }
 
 /** Converts a string to the UInt8 array. */

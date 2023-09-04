@@ -11,8 +11,8 @@ message Chat {
     repeated Message messages = 1;
 }
 
-// Memebers of the chat.
-message ChatMemebers {
+// Members of the chat.
+message ChatMembers {
     // Users that are currently online in the chat.
     repeated User online_users = 1; 
 }
