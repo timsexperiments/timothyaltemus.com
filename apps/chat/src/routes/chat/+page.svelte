@@ -168,7 +168,9 @@
                 }
               }}
               on:blur={() => {
-                sendTypingEvent(false);
+                if (isUserTyping) {
+                  sendTypingEvent(false);
+                }
               }}
               aria-invalid="false" />
             <button
