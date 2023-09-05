@@ -1,11 +1,12 @@
 import { chat, google } from './generated/chat';
 
-const { Chat, ChatMembers, ClientEvent, Message, ServerEvent, User } = chat;
+const { Chat, ChatMembers, ClientEvent, Message, ServerEvent, TypingMetadata, User } = chat;
 export type Chat = chat.IChat;
 export type ChatMembers = chat.IChatMembers;
 export type ClientEvent = chat.IClientEvent;
 export type Message = chat.IMessage;
 export type ServerEvent = chat.IServerEvent;
+export type TypingMetadata = chat.ITypingMetadata;
 export type User = chat.IUser;
 const ClientEventType = ClientEvent.Type;
 const ServerEventType = ServerEvent.Type;
@@ -16,6 +17,7 @@ export {
   Message as MessageProto,
   ServerEvent as ServerEventProto,
   ServerEventType,
+  TypingMetadata as TypingMetadataProto,
   User as UserProto,
 };
 
@@ -49,6 +51,9 @@ export const createMessage = ({
   });
 };
 
+/** Creates a typing metadata proto. */
+export const createTypingMetadata = TypingMetadata.create;
+
 /** Creates a user proto. */
 export const createUser = User.create;
 
@@ -62,24 +67,29 @@ export const serializeChatMembers = (chatMembers: ChatMembers) => {
   return String.fromCharCode(...ChatMembers.encode(chatMembers).finish());
 };
 
-/** Serializes a ServerEvent proto into a string. */
-export const serializeServerEvent = (event: ServerEvent) => {
-  return String.fromCharCode(...ServerEvent.encode(event).finish());
-};
-
 /** Serializes a Client Event proto into a string. */
 export const serializeClientEvent = (event: ClientEvent) => {
   return String.fromCharCode(...ClientEvent.encode(event).finish());
 };
 
-/** Serializes a User proto into a string. */
-export const serializeUser = (user: User) => {
-  return String.fromCharCode(...User.encode(user).finish());
-};
-
 /** Serializes a Message proto into a string. */
 export const serializeMessage = (message: Message) => {
   return String.fromCharCode(...Message.encode(message).finish());
+};
+
+/** Serializes a ServerEvent proto into a string. */
+export const serializeServerEvent = (event: ServerEvent) => {
+  return String.fromCharCode(...ServerEvent.encode(event).finish());
+};
+
+/** Serializes a User proto into a string. */
+export const serializeTypingMetadata = (typingMetadata: TypingMetadata) => {
+  return String.fromCharCode(...TypingMetadata.encode(typingMetadata).finish());
+};
+
+/** Serializes a User proto into a string. */
+export const serializeUser = (user: User) => {
+  return String.fromCharCode(...User.encode(user).finish());
 };
 
 /**
@@ -125,6 +135,15 @@ export function deserializeClientEvent(serialized: string): ClientEvent {
  */
 export function deserializeMessage(serialized: string): Message {
   return Message.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
+}
+
+/**
+ * Deserializes a serialized string into a User proto.
+ *
+ * The serialized message must represent a User proto.
+ */
+export function deserializeTypingMetadata(serialized: string): TypingMetadata {
+  return TypingMetadata.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 }
 
 /**

@@ -1,19 +1,21 @@
 import {
 	ClientEventType,
 	ServerEventType,
-	UserProto,
+	TypingMetadataProto,
 	createChat,
 	createChatMembers,
 	createClientEvent,
 	createMessage,
+	createTypingMetadata,
 	createUser,
 	deserializeChat,
 	deserializeChatMembers,
 	deserializeServerEvent,
 	serializeChat,
 	serializeChatMembers,
-	serializeUser,
+	serializeTypingMetadata,
 	serializedStringToUInt8,
+	toProtoTimestamp,
 } from 'chat-messages';
 import { CHAT_KV_KEY, MEMBERS_KV_KEY, corsHeaders } from './constants';
 import { WebSocketServer } from './websocket-server';
@@ -116,6 +118,8 @@ export class ChatServer {
 					if (!message) {
 						throw new Error(`Message ${event.message?.id} does not exist.`);
 					}
+					message.content = event.message?.content;
+					message.editedAt = toProtoTimestamp(new Date());
 					await this.env.CHAT_KV.put(CHAT_KV_KEY, serializeChat(chat));
 					this.server.brodcastWithoutSessions(createClientEvent({ type: ClientEventType.CHAT }), [
 						session,
@@ -130,12 +134,14 @@ export class ChatServer {
 					break;
 				}
 				case ServerEventType.TYPING: {
+					const isTyping = event.metadata!['isTyping'];
+					const typingMetadata = createTypingMetadata({ isTyping: isTyping === 'true', user });
 					this.server.brodcastWithoutSessions(
 						createClientEvent({
 							type: ClientEventType.TYPING,
 							metadata: {
-								type_url: UserProto.name,
-								value: serializedStringToUInt8(serializeUser(user)),
+								type_url: TypingMetadataProto.name,
+								value: serializedStringToUInt8(serializeTypingMetadata(typingMetadata)),
 							},
 						}),
 						[session],

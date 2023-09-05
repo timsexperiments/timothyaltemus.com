@@ -5,6 +5,7 @@ import {
   createMessage,
   createServerEvent,
   deserializeClientEvent,
+  deserializeTypingMetadata,
   serializeServerEvent,
 } from 'chat-messages';
 import { writable } from 'svelte/store';
@@ -22,6 +23,10 @@ export default class ChatClient {
     this.members = writable(initialMembers);
     this.error = writable(null);
     this.isConnected = writable(false);
+    /** @type {import('svelte/store').Writable<string[]>} */
+    this.typing = writable([]);
+    /** @type {string[]} */
+    this.typingUsers = [];
     this.user = user;
     /** @type {import('chat-messages').Message[]} */
     this.previousMessage = initialMessages;
@@ -47,8 +52,8 @@ export default class ChatClient {
     });
   }
 
-  updateMembers() {
-    fetch('/api/members')
+  async updateMembers() {
+    await fetch('/api/members')
       .then((res) => res.json())
       .then((data) => {
         this.members.set(data);
@@ -76,12 +81,28 @@ export default class ChatClient {
    */
   handleClientEvent(clientEvent) {
     switch (clientEvent.type) {
-      case ClientEventType.MEMBERS:
+      case ClientEventType.MEMBERS: {
         this.updateMembers();
         break;
-      case ClientEventType.CHAT:
+      }
+      case ClientEventType.CHAT: {
         this.updateMessages();
         break;
+      }
+      case ClientEventType.TYPING: {
+        const { isTyping, user } = deserializeTypingMetadata(
+          clientEvent.metadata?.value?.toString() ?? '',
+        );
+        const { username } = user ?? {};
+        if (isTyping && username) {
+          this.typingUsers.push(username);
+          this.typing.set(this.typingUsers);
+        } else {
+          this.typingUsers = this.typingUsers.filter((user) => user !== username);
+          this.typing.set(this.typingUsers);
+        }
+        break;
+      }
     }
   }
 
@@ -104,5 +125,19 @@ export default class ChatClient {
     this.ws.send(serializeServerEvent(event));
     this.messages.set([...this.previousMessage, newMessage]);
     setTimeout(() => this.updateMessages(), 1000);
+  }
+
+  /**
+   * Sends a typing event.
+   *
+   * @param {boolean} isTyping true to indicate the person is typing or false to indicate the person is done typing.
+   */
+  sendTypingEvent(isTyping) {
+    const event = createServerEvent({
+      type: ServerEventType.TYPING,
+      actingUser: this.user,
+      metadata: { isTyping: `${isTyping}` },
+    });
+    this.ws.send(serializeServerEvent(event));
   }
 }

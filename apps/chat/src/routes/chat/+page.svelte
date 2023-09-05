@@ -30,6 +30,8 @@
   let members;
   /** @type {import('svelte/store').Writable<boolean>} */
   let isConnected;
+  /** @type {import('svelte/store').Writable<string[]>}*/
+  let typingUsers;
 
   onMount(async () => {
     const initialMessages = await fetch('/api/messages').then((response) => response.json());
@@ -39,6 +41,7 @@
     messages = chatClient.messages;
     members = chatClient.members;
     isConnected = chatClient.isConnected;
+    typingUsers = chatClient.typing;
 
     // @ts-ignore
     emojiPicker = new Picker({
@@ -56,20 +59,22 @@
     isConnected = chatClient.isConnected;
   }
 
-  $: hasMessages = $messages?.length;
-  $: hasMembers = $members?.length;
+  $: hasMessages = !!$messages?.length;
+  $: hasMembers = !!$members?.length;
   $: if (emojiTarget) {
     emojiTarget.appendChild(emojiPicker);
   }
+  $: numTypingUsers = $typingUsers?.length ?? 0;
+  $: isUserTyping = $typingUsers.includes(chatClient?.user.username ?? '');
 
   function sendMessage() {
     chatClient?.sendMessage(message);
     form.reset();
   }
 
-  function refreshMembers() {
+  async function refreshMembers() {
     reloadingMembers = true;
-    chatClient?.updateMembers();
+    await chatClient?.updateMembers();
     reloadingMembers = false;
   }
 
@@ -80,6 +85,13 @@
   function toAvatar(avatar = 'basic') {
     // @ts-ignore
     return avatar;
+  }
+
+  /**
+   * @param {boolean} isTyping
+   */
+  function sendTypingEvent(isTyping) {
+    chatClient?.sendTypingEvent(isTyping);
   }
 </script>
 
@@ -99,7 +111,7 @@
         </svg>
       </div>
       <nav class="flex flex-1 flex-col">
-        <div class="mb-2 flex items-center gap-2">
+        <div class="mb-4 flex items-center gap-2">
           <h2>Online members</h2>
           <svg
             class="h-4 w-4"
@@ -118,7 +130,7 @@
           </svg>
         </div>
         {#if hasMembers}
-          <ul>
+          <ul class="flex flex-col gap-2">
             {#each $members as member}
               <li><Profile user={member} /></li>
             {/each}
@@ -147,6 +159,17 @@
               name="message"
               bind:value={message}
               disabled={!$isConnected}
+              on:change={(event) => {
+                if (event.currentTarget.value.length === 0) {
+                  return sendTypingEvent(false);
+                }
+                if (!isUserTyping) {
+                  return sendTypingEvent(true);
+                }
+              }}
+              on:blur={() => {
+                sendTypingEvent(false);
+              }}
               aria-invalid="false" />
             <button
               type="button"
@@ -188,6 +211,17 @@
           </svg>
         </button>
       </form>
+      {#if numTypingUsers > 0}
+        <div>
+          {$typingUsers.join(', ')}
+          {#if numTypingUsers === 1}
+            is
+          {:else}
+            are
+          {/if}
+          ...
+        </div>
+      {/if}
       <hr />
       <div class="flex w-full flex-1 p-2">
         {#if hasMessages}
