@@ -50,6 +50,21 @@ export default class ChatClient {
     this.ws.addEventListener('close', () => {
       this.isConnected.set(false);
     });
+
+    window.addEventListener(
+      'beforeunload',
+      (event) => {
+        event.preventDefault();
+        try {
+          this.ws.close(1000);
+        } catch (error) {
+          console.error(error);
+          this.ws.close();
+        }
+        return (event.returnValue = '');
+      },
+      { capture: true },
+    );
   }
 
   async updateMembers() {

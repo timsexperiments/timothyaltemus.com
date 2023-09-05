@@ -65,7 +65,7 @@
     emojiTarget.appendChild(emojiPicker);
   }
   $: numTypingUsers = $typingUsers?.length ?? 0;
-  $: isUserTyping = $typingUsers.includes(chatClient?.user.username ?? '');
+  $: isUserTyping = ($typingUsers ?? []).includes(chatClient?.user.username ?? '');
 
   function sendMessage() {
     chatClient?.sendMessage(message);
