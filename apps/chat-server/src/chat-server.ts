@@ -97,6 +97,7 @@ export class ChatServer {
 			const event = deserializeServerEvent(data.toString());
 			console.log('Recieved a', event.type, 'event from', user.username + '.');
 			console.log(event);
+			console.log(ServerEventType.MESSAGE, ServerEventType.MESSAGE.toString());
 			switch (event.type) {
 				case ServerEventType.MESSAGE: {
 					const chat = deserializeChat((await this.env.CHAT_KV.get(CHAT_KV_KEY))!);
