@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/any.proto";
 
 package chat;
 
@@ -85,13 +84,5 @@ message ClientEvent {
     // The type of the Client Event.
     Type type = 1;
     // Metadata for a client event.
-    optional google.protobuf.Any metadata = 2;
-}
-
-// Metadata for a client 'TYPING' event.
-message TypingMetadata {
-    // The user who the typing event applies to.
-    User user = 1;
-    // Whether the event is for a start typing event.
-    bool is_typing = 2;
+    map<string, string> metadata = 2;
 }

@@ -4,7 +4,6 @@ import {
   createMessage,
   createServerEvent,
   deserializeClientEvent,
-  deserializeTypingMetadata,
   serializeServerEvent,
 } from 'chat-messages';
 import { writable } from 'svelte/store';
@@ -104,10 +103,11 @@ export default class ChatClient {
         break;
       }
       case 'TYPING': {
-        const { isTyping, user } = deserializeTypingMetadata(
-          clientEvent.metadata?.value?.toString() ?? '',
-        );
-        const { username } = user ?? {};
+        if (!clientEvent.metadata) {
+          break;
+        }
+        const isTyping = clientEvent.metadata['isTyping'];
+        const username = clientEvent.metadata['username'];
         if (isTyping && username) {
           this.typingUsers.push(username);
           this.typing.set(this.typingUsers);

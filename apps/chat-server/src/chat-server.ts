@@ -1,19 +1,15 @@
 import {
 	ClientEventType,
-	TypingMetadataProto,
 	createChat,
 	createChatMembers,
 	createClientEvent,
 	createMessage,
-	createTypingMetadata,
 	createUser,
 	deserializeChat,
 	deserializeChatMembers,
 	deserializeServerEvent,
 	serializeChat,
 	serializeChatMembers,
-	serializeTypingMetadata,
-	serializedStringToUInt8,
 	toProtoTimestamp,
 } from 'chat-messages';
 import { CHAT_KV_KEY, MEMBERS_KV_KEY, corsHeaders } from './constants';
@@ -27,29 +23,24 @@ export class ChatServer {
 		private readonly state: DurableObjectState,
 		private readonly env: Omit<Env, 'CHAT_DO'>,
 	) {
-		this.env.CHAT_KV.get(MEMBERS_KV_KEY).then(async (members) => {
-			if (!members) {
-				await this.env.CHAT_KV.put(
-					MEMBERS_KV_KEY,
-					serializeChatMembers(createChatMembers({ onlineUsers: [] })),
-				);
-			}
-		});
-
 		this.server = new WebSocketServer({
 			onJoin: async (server, { session }) => {
+				console.log(session.user.username, 'just joined the server.');
 				const members = deserializeChatMembers((await this.env.CHAT_KV.get(MEMBERS_KV_KEY))!);
 				members.onlineUsers?.push(session.user);
+				console.log(members.onlineUsers);
 				await this.env.CHAT_KV.put(MEMBERS_KV_KEY, serializeChatMembers(members));
 				server.broadcast(createClientEvent({ type: ClientEventType.MEMBERS }));
 			},
 			onLeave: async (server, { session }) => {
+				console.log(session.user.username, 'just is leaving the server.');
 				const users = deserializeChatMembers((await this.env.CHAT_KV.get(MEMBERS_KV_KEY))!);
 				const newUsers = createChatMembers({
 					onlineUsers: (users.onlineUsers ?? []).filter(
 						(user) => user.username !== session.user.username,
 					),
 				});
+				console.log('New users', newUsers);
 				await this.env.CHAT_KV.put(MEMBERS_KV_KEY, serializeChatMembers(newUsers));
 				server.broadcast(createClientEvent({ type: ClientEventType.MEMBERS }));
 			},
@@ -129,13 +120,12 @@ export class ChatServer {
 				}
 				case 'TYPING': {
 					const isTyping = event.metadata!['isTyping'];
-					const typingMetadata = createTypingMetadata({ isTyping: isTyping === 'true', user });
 					this.server.brodcastWithoutSessions(
 						createClientEvent({
 							type: ClientEventType.TYPING,
 							metadata: {
-								type_url: TypingMetadataProto.name,
-								value: serializedStringToUInt8(serializeTypingMetadata(typingMetadata)),
+								username: user.username,
+								isTyping,
 							},
 						}),
 						[session],

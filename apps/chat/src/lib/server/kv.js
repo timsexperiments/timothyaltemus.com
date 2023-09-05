@@ -17,6 +17,7 @@ const CHAT_KEY = 'chat';
 export async function getMembers(chatKv) {
   const membersRaw = await chatKv.get(MEMBERS_KEY);
   if (!membersRaw) {
+    console.log('No members were found in the store.');
     return createChatMembers({ onlineUsers: [] });
   }
   return deserializeChatMembers(membersRaw);
@@ -31,6 +32,7 @@ export async function getMembers(chatKv) {
 export async function getChat(chatKv) {
   const chatRaw = await chatKv.get(CHAT_KEY);
   if (!chatRaw) {
+    console.log('No messages were found in the store.');
     return createChat({ messages: [] });
   }
   return deserializeChat(chatRaw);

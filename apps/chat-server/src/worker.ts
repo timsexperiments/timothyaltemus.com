@@ -1,3 +1,4 @@
+import { createChat, createChatMembers, serializeChat, serializeChatMembers } from 'chat-messages';
 import {
 	CHAT_KV_KEY,
 	corsHeaders as CORS_HEADERS,
@@ -31,6 +32,20 @@ export default {
 				let stub = env.CHAT_DO.get(id);
 				return await stub.fetch(request);
 		}
+
+		const members = await env.CHAT_KV.get(MEMBERS_KV_KEY);
+		if (!members) {
+			await env.CHAT_KV.put(
+				MEMBERS_KV_KEY,
+				serializeChatMembers(createChatMembers({ onlineUsers: [] })),
+			);
+		}
+
+		const chat = await env.CHAT_KV.get(CHAT_KV_KEY);
+		if (!chat) {
+			await env.CHAT_KV.put(CHAT_KV_KEY, serializeChat(createChat({ messages: [] })));
+		}
+
 		return await httpRouter.handler(request, env);
 	},
 };
