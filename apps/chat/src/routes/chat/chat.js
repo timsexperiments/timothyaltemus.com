@@ -139,6 +139,7 @@ export default class ChatClient {
       message: newMessage,
     });
     this.ws.send(serializeServerEvent(event));
+    console.log('The message should have been sent...');
     this.messages.set([...this.previousMessage, newMessage]);
   }
 
@@ -154,5 +155,6 @@ export default class ChatClient {
       metadata: { isTyping: `${isTyping}` },
     });
     this.ws.send(serializeServerEvent(event));
+    console.log('The typing event should have been sent...');
   }
 }
