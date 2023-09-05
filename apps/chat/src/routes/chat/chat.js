@@ -1,6 +1,5 @@
 import { PUBLIC_CHAT_WS } from '$env/static/public';
 import {
-  ClientEventType,
   ServerEventType,
   createMessage,
   createServerEvent,
@@ -92,20 +91,20 @@ export default class ChatClient {
   }
 
   /**
-   * @param {import('chat-messages').ClientEvent} clientEvent
+   * @param {ReturnType<typeof import('chat-messages').deserializeClientEvent>} clientEvent
    */
   handleClientEvent(clientEvent) {
     console.log('received message', clientEvent.type, 'with', clientEvent.metadata);
     switch (clientEvent.type) {
-      case ClientEventType.MEMBERS: {
+      case 'MEMBERS': {
         this.updateMembers();
         break;
       }
-      case ClientEventType.CHAT: {
+      case 'CHAT': {
         this.updateMessages();
         break;
       }
-      case ClientEventType.TYPING: {
+      case 'TYPING': {
         const { isTyping, user } = deserializeTypingMetadata(
           clientEvent.metadata?.value?.toString() ?? '',
         );
