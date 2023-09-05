@@ -159,7 +159,7 @@
               name="message"
               bind:value={message}
               disabled={!$isConnected}
-              on:change={() => {
+              on:keydown={() => {
                 console.log('Change event occured.');
                 if (message.length === 0) {
                   return sendTypingEvent(false);
