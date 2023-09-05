@@ -95,7 +95,8 @@ export class ChatServer {
 		});
 		session.socket.addEventListener('message', async ({ data }) => {
 			const event = deserializeServerEvent(data.toString());
-			console.log('Recieved a', event.type, 'event');
+			console.log('Recieved a', event.type, 'event from', user.username + '.');
+			console.log(event);
 			switch (event.type) {
 				case ServerEventType.MESSAGE: {
 					const chat = deserializeChat((await this.env.CHAT_KV.get(CHAT_KV_KEY))!);
@@ -106,10 +107,10 @@ export class ChatServer {
 						createdAt: new Date(),
 					});
 					chat.messages?.push(newMessage);
+					console.log('Just added a new message:', newMessage);
+					console.log('Messages are now:', chat.messages);
 					await this.env.CHAT_KV.put(CHAT_KV_KEY, serializeChat(chat));
-					this.server.brodcastWithoutSessions(createClientEvent({ type: ClientEventType.CHAT }), [
-						session,
-					]);
+					this.server.broadcast(createClientEvent({ type: ClientEventType.CHAT }));
 					break;
 				}
 				case ServerEventType.EDIT: {
@@ -121,9 +122,6 @@ export class ChatServer {
 					message.content = event.message?.content;
 					message.editedAt = toProtoTimestamp(new Date());
 					await this.env.CHAT_KV.put(CHAT_KV_KEY, serializeChat(chat));
-					this.server.brodcastWithoutSessions(createClientEvent({ type: ClientEventType.CHAT }), [
-						session,
-					]);
 					this.server.broadcast(createClientEvent({ type: ClientEventType.CHAT }));
 					break;
 				}

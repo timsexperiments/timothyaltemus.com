@@ -140,7 +140,6 @@ export default class ChatClient {
     });
     this.ws.send(serializeServerEvent(event));
     this.messages.set([...this.previousMessage, newMessage]);
-    setTimeout(() => this.updateMessages(), 1000);
   }
 
   /**
