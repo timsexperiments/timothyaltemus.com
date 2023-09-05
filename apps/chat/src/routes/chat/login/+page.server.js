@@ -31,10 +31,6 @@ export const load = async ({ platform, cookies }) => {
 /** @type {import('./$types').Actions} */
 export const actions = {
   login: async ({ platform, request, cookies }) => {
-    if (platform) {
-      console.log(Object.keys(platform.env ?? {}));
-      console.log(platform.env);
-    }
     if (!platform || !platform.env) {
       throw PLATFORM_ERROR;
     }

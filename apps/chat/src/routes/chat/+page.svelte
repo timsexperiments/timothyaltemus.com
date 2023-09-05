@@ -32,6 +32,7 @@
   let isConnected;
   /** @type {import('svelte/store').Writable<string[]>}*/
   let typingUsers;
+  let isUserTyping = false;
 
   onMount(async () => {
     const initialMessages = await fetch('/api/messages').then((response) => response.json());
@@ -64,8 +65,8 @@
   $: if (emojiTarget) {
     emojiTarget.appendChild(emojiPicker);
   }
-  $: numTypingUsers = $typingUsers?.length ?? 0;
-  $: isUserTyping = ($typingUsers ?? []).includes(chatClient?.user.username ?? '');
+  $: displayTypingUsers = $typingUsers.filter((user) => user !== chatClient?.user.username);
+  $: numTypingUsers = displayTypingUsers?.length ?? 0;
 
   function sendMessage() {
     chatClient?.sendMessage(message);
@@ -168,16 +169,18 @@
               bind:value={message}
               disabled={!$isConnected}
               on:keydown={() => {
-                console.log('Change event occured.');
                 if (message.length === 0) {
+                  isUserTyping = false;
                   return sendTypingEvent(false);
                 }
                 if (!isUserTyping) {
+                  isUserTyping = true;
                   return sendTypingEvent(true);
                 }
               }}
               on:blur={() => {
                 if (isUserTyping) {
+                  isUserTyping = false;
                   sendTypingEvent(false);
                 }
               }}
@@ -224,7 +227,7 @@
       </form>
       {#if numTypingUsers > 0}
         <div>
-          {$typingUsers.join(', ')}
+          {displayTypingUsers.join(', ')}
           {#if numTypingUsers === 1}
             is
           {:else}

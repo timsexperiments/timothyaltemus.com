@@ -1,6 +1,5 @@
 import {
 	ClientEventType,
-	ServerEventType,
 	TypingMetadataProto,
 	createChat,
 	createChatMembers,
@@ -96,8 +95,6 @@ export class ChatServer {
 		session.socket.addEventListener('message', async ({ data }) => {
 			const event = deserializeServerEvent(data.toString());
 			console.log('Recieved a', event.type, 'event from', user.username + '.');
-			console.log(event);
-			console.log('type', event.type, ServerEventType.MESSAGE, ServerEventType.MESSAGE.toString());
 			switch (event.type) {
 				case 'MESSAGE': {
 					const chat = deserializeChat((await this.env.CHAT_KV.get(CHAT_KV_KEY))!);
@@ -108,8 +105,6 @@ export class ChatServer {
 						createdAt: new Date(),
 					});
 					chat.messages?.push(newMessage);
-					console.log('Just added a new message:', newMessage);
-					console.log('Messages are now:', chat.messages);
 					await this.env.CHAT_KV.put(CHAT_KV_KEY, serializeChat(chat));
 					this.server.broadcast(createClientEvent({ type: ClientEventType.CHAT }));
 					break;

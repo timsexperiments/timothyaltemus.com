@@ -94,7 +94,6 @@ export default class ChatClient {
    * @param {ReturnType<typeof import('chat-messages').deserializeClientEvent>} clientEvent
    */
   handleClientEvent(clientEvent) {
-    console.log('received message', clientEvent.type, 'with', clientEvent.metadata);
     switch (clientEvent.type) {
       case 'MEMBERS': {
         this.updateMembers();
@@ -138,7 +137,6 @@ export default class ChatClient {
       message: newMessage,
     });
     this.ws.send(serializeServerEvent(event));
-    console.log('The message should have been sent...');
     this.messages.set([...this.previousMessage, newMessage]);
   }
 
@@ -154,6 +152,5 @@ export default class ChatClient {
       metadata: { isTyping: `${isTyping}` },
     });
     this.ws.send(serializeServerEvent(event));
-    console.log('The typing event should have been sent...');
   }
 }
