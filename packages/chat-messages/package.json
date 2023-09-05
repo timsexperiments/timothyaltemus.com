@@ -1,6 +1,6 @@
 {
   "name": "chat-messages",
-  "description": "",
+  "description": "Proto generated types for the chat application.",
   "module": "esm/index.js",
   "main": "cjs/index.js",
   "types": "types/index.ts",

@@ -1,6 +1,5 @@
 {
   "name": "chat",
-  "version": "0.0.1",
   "scripts": {
     "dev": "wrangler pages dev .svelte-kit/cloudflare",
     "build": "vite build",
