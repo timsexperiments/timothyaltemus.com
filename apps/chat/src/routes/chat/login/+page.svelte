@@ -44,7 +44,7 @@
           id="who-description"
           class:text-red-600={whoErrors?.length}
           class="text-sm text-stone-500">
-          {#if whoErrors?.length}whoErrors[0]{:else}This is your public display name.{/if}
+          {#if whoErrors?.length}{whoErrors[0]}{:else}This is your public display name.{/if}
         </p>
       </div>
       <div class="space-y-2">
