@@ -97,9 +97,9 @@ export class ChatServer {
 			const event = deserializeServerEvent(data.toString());
 			console.log('Recieved a', event.type, 'event from', user.username + '.');
 			console.log(event);
-			console.log(ServerEventType.MESSAGE, ServerEventType.MESSAGE.toString());
+			console.log('type', event.type, ServerEventType.MESSAGE, ServerEventType.MESSAGE.toString());
 			switch (event.type) {
-				case ServerEventType.MESSAGE: {
+				case 'MESSAGE': {
 					const chat = deserializeChat((await this.env.CHAT_KV.get(CHAT_KV_KEY))!);
 					const newMessage = createMessage({
 						id: crypto.randomUUID(),
@@ -114,7 +114,7 @@ export class ChatServer {
 					this.server.broadcast(createClientEvent({ type: ClientEventType.CHAT }));
 					break;
 				}
-				case ServerEventType.EDIT: {
+				case 'EDIT': {
 					const chat = deserializeChat((await this.env.CHAT_KV.get(CHAT_KV_KEY))!);
 					const message = chat.messages?.find((message) => message.id === event.message?.id);
 					if (!message) {
@@ -126,13 +126,13 @@ export class ChatServer {
 					this.server.broadcast(createClientEvent({ type: ClientEventType.CHAT }));
 					break;
 				}
-				case ServerEventType.REACT: {
+				case 'REACT': {
 					this.server.brodcastWithoutSessions(createClientEvent({ type: ClientEventType.CHAT }), [
 						session,
 					]);
 					break;
 				}
-				case ServerEventType.TYPING: {
+				case 'TYPING': {
 					const isTyping = event.metadata!['isTyping'];
 					const typingMetadata = createTypingMetadata({ isTyping: isTyping === 'true', user });
 					this.server.brodcastWithoutSessions(
@@ -147,9 +147,9 @@ export class ChatServer {
 					);
 					break;
 				}
-				case ServerEventType.EVENT_TYPE_UNSPECIFIED:
-				case ServerEventType.JOIN:
-				case ServerEventType.LEAVE:
+				case 'EVENT_TYPE_UNSPECIFIED':
+				case 'JOIN':
+				case 'LEAVE':
 				default:
 			}
 		});

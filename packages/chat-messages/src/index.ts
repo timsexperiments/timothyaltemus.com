@@ -11,6 +11,7 @@ export type User = chat.IUser;
 const ClientEventType = ClientEvent.Type;
 const ServerEventType = ServerEvent.Type;
 export {
+  ChatMembers as ChatMembersProto,
   Chat as ChatProto,
   ClientEvent as ClientEventProto,
   ClientEventType,
@@ -20,6 +21,46 @@ export {
   TypingMetadata as TypingMetadataProto,
   User as UserProto,
 };
+
+type DeserializedChatMembers = { [Key in keyof ChatMembers]: DeserializedUser[] };
+type DeserializedChat = { [Key in keyof Chat]: DeserializedMessage[] };
+type DeserializedClientEvent = {
+  [Key in keyof ClientEvent]: Key extends 'type' ? ClientEventType : ClientEvent[Key];
+};
+type DeserializedMessage = {
+  [Key in keyof Message]: Key extends 'author'
+    ? DeserializedUser | null
+    : Key extends 'replyFrom'
+    ? DeserializedMessage | null
+    : Message[Key];
+};
+type DeserializedServerEvent = {
+  [Key in keyof ServerEvent]: Key extends 'type'
+    ? ServerEventType
+    : Key extends 'message'
+    ? DeserializedMessage | null
+    : Key extends 'actingUser'
+    ? DeserializedUser | null
+    : ServerEvent[Key];
+} & {
+  type: ServerEventType;
+};
+type DeserializedTypingMetadata = {
+  [Key in keyof TypingMetadata]: TypingMetadata[Key];
+};
+type DeserializedUser = { [Key in keyof User]: User[Key] };
+
+type ServerEventType =
+  | 'EVENT_TYPE_UNSPECIFIED'
+  | 'MESSAGE'
+  | 'REACT'
+  | 'MESSAGE'
+  | 'EDIT'
+  | 'TYPING'
+  | 'LEAVE'
+  | 'JOIN';
+
+type ClientEventType = 'CLIENT_EVENT_TYPE_UNSPECIFIED' | 'CHAT' | 'MEMBERS' | 'TYPING';
 
 /** Creates a chat proto. */
 export const createChat = Chat.create;
@@ -97,7 +138,7 @@ export const serializeUser = (user: User) => {
  *
  * The serialized message must represent a Chat proto.
  */
-export const deserializeChat = (serialized: string): Chat => {
+export const deserializeChat = (serialized: string): DeserializedChat => {
   return Chat.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 };
 
@@ -106,7 +147,7 @@ export const deserializeChat = (serialized: string): Chat => {
  *
  * The serialized message must represent a ChatMembers proto.
  */
-export const deserializeChatMembers = (serialized: string): ChatMembers => {
+export const deserializeChatMembers = (serialized: string): DeserializedChatMembers => {
   return ChatMembers.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 };
 
@@ -115,8 +156,10 @@ export const deserializeChatMembers = (serialized: string): ChatMembers => {
  *
  * The serialized message must represent an Event proto.
  */
-export function deserializeServerEvent(serialized: string): ServerEvent {
-  return ServerEvent.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
+export function deserializeServerEvent(serialized: string): DeserializedServerEvent {
+  return ServerEvent.decode(
+    Uint8Array.from(serializedStringToUInt8(serialized)),
+  ).toJSON() as DeserializedServerEvent;
 }
 
 /**
@@ -124,7 +167,7 @@ export function deserializeServerEvent(serialized: string): ServerEvent {
  *
  * The serialized message must represent an Event proto.
  */
-export function deserializeClientEvent(serialized: string): ClientEvent {
+export function deserializeClientEvent(serialized: string): DeserializedClientEvent {
   return ClientEvent.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 }
 
@@ -133,7 +176,7 @@ export function deserializeClientEvent(serialized: string): ClientEvent {
  *
  * The serialized message must represent a Message proto.
  */
-export function deserializeMessage(serialized: string): Message {
+export function deserializeMessage(serialized: string): DeserializedMessage {
   return Message.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 }
 
@@ -142,7 +185,7 @@ export function deserializeMessage(serialized: string): Message {
  *
  * The serialized message must represent a User proto.
  */
-export function deserializeTypingMetadata(serialized: string): TypingMetadata {
+export function deserializeTypingMetadata(serialized: string): DeserializedTypingMetadata {
   return TypingMetadata.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 }
 
@@ -151,7 +194,7 @@ export function deserializeTypingMetadata(serialized: string): TypingMetadata {
  *
  * The serialized message must represent a User proto.
  */
-export function deserializeUser(serialized: string): User {
+export function deserializeUser(serialized: string): DeserializedUser {
   return User.decode(Uint8Array.from(serializedStringToUInt8(serialized))).toJSON();
 }
 
