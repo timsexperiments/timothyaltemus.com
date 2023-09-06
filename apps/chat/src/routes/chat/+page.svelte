@@ -230,7 +230,7 @@
         </button>
       </form>
       {#if numTypingUsers > 0}
-        <div>
+        <div class="px-2">
           {displayTypingUsers}
           {#if numTypingUsers === 1}
             is
