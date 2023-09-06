@@ -65,10 +65,10 @@
   $: if (emojiTarget) {
     emojiTarget.appendChild(emojiPicker);
   }
-  $: displayTypingUsers = new Intl.ListFormat(Array.from(new Set(notMeTypingUsers)), {
+  $: displayTypingUsers = new Intl.ListFormat('en-us', {
     style: 'long',
     type: 'conjunction',
-  });
+  }).format(Array.from(new Set(notMeTypingUsers)));
   $: notMeTypingUsers = $typingUsers?.filter((user) => user !== chatClient?.user.username) ?? [];
   $: numTypingUsers = notMeTypingUsers.length;
 
@@ -149,7 +149,7 @@
       <div class="mb-4 flex items-center justify-end text-slate-50">
         <a href="https://github.com/timsexperiments/timothyaltemus.com" target="_blank">
           <svg
-            class="h-5 w-5"
+            class="h-6 w-6"
             fill="currentColor"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 496 512">
