@@ -26,19 +26,23 @@ export class ChatServer {
 		this.server = new WebSocketServer({
 			onJoin: async (server, { session }) => {
 				console.log(session.user.username, 'just joined the server.');
-				const members = deserializeChatMembers((await this.env.CHAT_KV.get(MEMBERS_KV_KEY))!);
-				members.onlineUsers?.push(session.user);
-				console.log(members.onlineUsers);
-				await this.env.CHAT_KV.put(MEMBERS_KV_KEY, serializeChatMembers(members));
+				const { onlineUsers = [] } = deserializeChatMembers(
+					(await this.env.CHAT_KV.get(MEMBERS_KV_KEY))!,
+				);
+				console.log('The original memebers were: ', onlineUsers);
+				onlineUsers.push(session.user);
+				console.log(onlineUsers);
+				await this.env.CHAT_KV.put(MEMBERS_KV_KEY, serializeChatMembers({ onlineUsers }));
 				server.broadcast(createClientEvent({ type: ClientEventType.MEMBERS }));
 			},
 			onLeave: async (server, { session }) => {
 				console.log(session.user.username, 'just is leaving the server.');
-				const users = deserializeChatMembers((await this.env.CHAT_KV.get(MEMBERS_KV_KEY))!);
+				const { onlineUsers = [] } = deserializeChatMembers(
+					(await this.env.CHAT_KV.get(MEMBERS_KV_KEY))!,
+				);
+				console.log('The original memebers were: ', onlineUsers);
 				const newUsers = createChatMembers({
-					onlineUsers: (users.onlineUsers ?? []).filter(
-						(user) => user.username !== session.user.username,
-					),
+					onlineUsers: onlineUsers.filter((user) => user.username !== session.user.username),
 				});
 				console.log('New users', newUsers);
 				await this.env.CHAT_KV.put(MEMBERS_KV_KEY, serializeChatMembers(newUsers));

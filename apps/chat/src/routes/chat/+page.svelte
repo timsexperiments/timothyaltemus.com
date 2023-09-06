@@ -65,8 +65,12 @@
   $: if (emojiTarget) {
     emojiTarget.appendChild(emojiPicker);
   }
-  $: displayTypingUsers = $typingUsers?.filter((user) => user !== chatClient?.user.username) ?? [];
-  $: numTypingUsers = displayTypingUsers?.length ?? 0;
+  $: displayTypingUsers = new Intl.ListFormat(Array.from(new Set(notMeTypingUsers)), {
+    style: 'long',
+    type: 'conjunction',
+  });
+  $: notMeTypingUsers = $typingUsers?.filter((user) => user !== chatClient?.user.username) ?? [];
+  $: numTypingUsers = notMeTypingUsers.length;
 
   function sendMessage() {
     chatClient?.sendMessage(message);
@@ -227,13 +231,13 @@
       </form>
       {#if numTypingUsers > 0}
         <div>
-          {displayTypingUsers.join(', ')}
+          {displayTypingUsers}
           {#if numTypingUsers === 1}
             is
           {:else}
             are
           {/if}
-          ...
+          typing...
         </div>
       {/if}
       <hr />
