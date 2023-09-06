@@ -146,7 +146,7 @@
           </p>
         {/if}
       </div>
-      <div class="flex items-center justify-end text-slate-50">
+      <div class="mb-4 flex items-center justify-end text-slate-50">
         <a href="https://github.com/timsexperiments/timothyaltemus.com" target="_blank">
           <svg
             class="h-5 w-5"
