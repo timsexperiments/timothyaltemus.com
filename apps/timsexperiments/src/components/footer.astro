@@ -1,22 +1,17 @@
+---
+import IconLight from '../icons/tim_s_experiments_icon_light.svg';
+---
+
 <footer class="border-t border-gray-200 bg-white text-gray-50">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div
       class="flex flex-col items-start justify-between gap-y-12 pb-6 pt-16 lg:flex-row lg:items-center lg:py-16">
       <div>
         <div class="flex items-center text-gray-900">
-          <svg
-            viewBox="0 0 40 40"
-            aria-hidden="true"
-            class="h-10 w-10 flex-none fill-cyan-500">
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M20 40C8.954 40 0 31.046 0 20S8.954 0 20 0s20 8.954 20 20-8.954 20-20 20ZM4 20c0 7.264 5.163 13.321 12.02 14.704C17.642 35.03 19 33.657 19 32V8c0-1.657-1.357-3.031-2.98-2.704C9.162 6.68 4 12.736 4 20Z">
-            </path>
-          </svg>
-          <div class="ml-4">
-            <p class="text-base font-semibold">Pocket</p>
-            <p class="mt-1 text-sm"> Invest at the perfect time.</p>
+          <img class="h-10" src={IconLight.src} />
+          <div class="ml-2">
+            <p class="text-base font-semibold">Tim's Experiments</p>
+            <p class="mt-1 text-sm">A playground for software enthusiasts.</p>
           </div>
         </div>
         <nav class="mt-11 flex gap-8">
@@ -82,25 +77,6 @@
     </div>
     <div
       class="flex flex-col items-center border-t border-gray-200 pb-12 pt-8 md:flex-row-reverse md:justify-between md:pt-6">
-      <form class="flex w-full justify-center md:w-auto">
-        <div class="w-60 min-w-0 shrink">
-          <input
-            id=":S5:"
-            type="email"
-            aria-label="Email address"
-            placeholder="Email address"
-            autocomplete="email"
-            required=""
-            class="block w-full appearance-none rounded-lg border border-gray-200 bg-white py-[calc(theme(spacing.2)-1px)] px-[calc(theme(spacing.3)-1px)] text-gray-900 placeholder:text-gray-400 focus:border-cyan-500 focus:outline-none focus:ring-cyan-500 sm:text-sm"
-          />
-        </div>
-        <button
-          class="inline-flex justify-center rounded-lg py-2 px-3 text-sm font-semibold outline-2 outline-offset-2 transition-colors relative overflow-hidden bg-cyan-500 text-white before:absolute before:inset-0 active:before:bg-transparent hover:before:bg-white/10 active:bg-cyan-600 active:text-white/80 before:transition-colors ml-4 flex-none"
-          type="submit">
-          <span class="hidden lg:inline">Join our newsletter</span>
-          <span class="lg:hidden">Join newsletter</span>
-        </button>
-      </form>
       <p class="mt-6 text-sm text-gray-500 md:mt-0">
         &COPY; Copyright <!-- -->2023<!-- -->. All rights reserved.
       </p>
