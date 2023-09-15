@@ -10,9 +10,10 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^7.1.0",
     "@headlessui/react": "^1.7.17",
     "@types/react-dom": "^18.2.7",
-    "astro": "^3.0.12",
+    "astro": "^3.0.13",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.270.0",
     "react": "^18.2.0",
