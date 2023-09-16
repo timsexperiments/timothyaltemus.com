@@ -23,7 +23,7 @@ function MobileNavLink({
     <Popover.Button
       as={Link}
       className={[
-        'hover:text-grey-50 block text-base leading-7 tracking-tight text-grey-200',
+        'block text-base leading-7 tracking-tight text-grey-200 hover:text-grey-50',
         className,
       ].join(' ')}
       {...props}
@@ -37,7 +37,7 @@ export function MobileNavMenu() {
       {({ open }) => (
         <>
           <Popover.Button
-            className="ui-not-focus-visible:outline-none stroke-grey-50 active:stroke-grey-50 relative z-10 -m-2 inline-flex items-center rounded-lg p-2 hover:bg-gray-200/50 hover:stroke-grey-600"
+            className="ui-not-focus-visible:outline-none relative z-10 -m-2 inline-flex items-center rounded-lg stroke-grey-50 p-2 hover:bg-gray-200/50 hover:stroke-grey-600 active:stroke-grey-50"
             aria-label="Toggle site navigation">
             {({ open }) =>
               open ? (
@@ -75,12 +75,12 @@ export function MobileNavMenu() {
                     <MobileNavLink href="/#pricing">Pricing</MobileNavLink>
                     <MobileNavLink
                       href="https://github.com/timsexperiments"
-                      className="hover:stroke-grey-50 stroke-grey-200">
+                      className="stroke-grey-200 hover:stroke-grey-50">
                       <GithubIcon />
                     </MobileNavLink>
                     <MobileNavLink
                       href="https://www.linkedin.com/in/timothyaltemus"
-                      className="hover:stroke-grey-50 stroke-grey-200">
+                      className="stroke-grey-200 hover:stroke-grey-50">
                       <LinkedinIcon />
                     </MobileNavLink>
                   </div>
