@@ -1,0 +1,42 @@
+{
+  "name": "@timsexperiments/react-ui",
+  "version": "0.0.0",
+  "description": "React ui elements that can be reused throughout timsexperiments apps.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc && rollup --config rollup.config.js"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "timsexperiments",
+    "carousel",
+    "framermotion",
+    "slideshow",
+    "component"
+  ],
+  "author": "Tim",
+  "license": "ISC",
+  "dependencies": {
+    "@timsexperiments/react-hooks": "workspace:^",
+    "framer-motion": "^10.16.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@timsexperiments/rollup": "workspace:^",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "rollup": "^3.29.2",
+    "tsconfig": "workspace:^"
+  },
+  "type": "module"
+}

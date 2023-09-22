@@ -1,0 +1,38 @@
+{
+  "name": "@timsexperiments/react-hooks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "dimensions",
+    "width",
+    "height"
+  ],
+  "scripts": {
+    "build": "tsc && rollup --config rollup.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@timsexperiments/rollup": "workspace:^",
+    "tsconfig": "workspace:^",
+    "rollup": "^3.29.2",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7"
+  },
+  "type": "module"
+}
