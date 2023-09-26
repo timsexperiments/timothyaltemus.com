@@ -2,10 +2,13 @@
   "extends": "tsconfig/base.json",
   "compilerOptions": {
     "jsx": "react",
+    "declaration": true,
     "emitDeclarationOnly": true,
     "module": "esnext",
     "outDir": "dist/types",
     "declarationMap": false
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*"
+  ]
 }
