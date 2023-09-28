@@ -7,27 +7,7 @@ binding = "NEWS_LETTER_KV"
 id = "acc7679be0c345cebd7a1345d52abcf8"
 preview_id = "d366f54af4bb45838291d9055e564bc7"
 
-[[send_email]]
-type = "send_email"
-name = "NO_REPLY_SENDER"
-destination_address = "no-reply@timsexperiments.foo"
-
-
-# Bind another Worker service. Use this binding to call another Worker without network overhead.
-# Docs: https://developers.cloudflare.com/workers/platform/services
-# [[services]]
-# binding = "MY_SERVICE"
-# service = "/api/*"
-
-# Bind a Durable Object. Durable objects are a scale-to-zero compute primitive based on the actor model.
-# Durable Objects can live for as long as needed. Use these when you need a long-running "server", such as in realtime apps.
-# Docs: https://developers.cloudflare.com/workers/runtime-apis/durable-objects
-# [[durable_objects.bindings]]
-# name = "MY_DURABLE_OBJECT"
-# class_name = "MyDurableObject"
-
-# Durable Object migrations.
-# Docs: https://developers.cloudflare.com/workers/learning/using-durable-objects#configure-durable-object-classes-with-migrations
-# [[migrations]]
-# tag = "v1"
-# new_classes = ["MyDurableObject"]
+[vars]
+FROM = "No Reply <no-reply@newsletter.timsexperiments.foo>"
+VALID_API_KEY = "ackabulucka"
+RESEND_API_KEY = "re_A2PnHL1o_5oAtoNqpWxDZ3vZxkXkgh9F9"

@@ -170,7 +170,7 @@ importers:
         version: 8.4.28
       prettier-plugin-tailwindcss:
         specifier: ^0.5.3
-        version: 0.5.3(prettier-plugin-svelte@3.0.3)(prettier@3.0.2)
+        version: 0.5.3(prettier-plugin-astro@0.12.0)(prettier@3.0.2)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -242,9 +242,12 @@ importers:
 
   apps/emailer:
     dependencies:
-      mimetext:
-        specifier: ^3.0.16
-        version: 3.0.16
+      '@timsexperiments/email-templates':
+        specifier: workspace:^
+        version: link:../../packages/email-templates
+      valibot:
+        specifier: ^0.17.1
+        version: 0.17.1
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20230419.0
@@ -294,7 +297,7 @@ importers:
         version: 1.0.3(astro@3.0.13)
       '@astrojs/react':
         specifier: ^3.0.2
-        version: 3.0.2(@types/react-dom@18.2.7)(@types/react@18.2.23)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.5)
+        version: 3.0.2(@types/react-dom@18.2.7)(@types/react@18.2.23)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.9)
       '@astrojs/tailwind':
         specifier: ^5.0.0
         version: 5.0.0(astro@3.0.13)(tailwindcss@3.3.3)
@@ -347,6 +350,9 @@ importers:
       react-email:
         specifier: 1.9.3
         version: 1.9.3
+      tsconfig:
+        specifier: workspace:^
+        version: link:../tsconfig
     devDependencies:
       '@types/react':
         specifier: ^18.2.23
@@ -475,7 +481,6 @@ packages:
 
   /@astrojs/compiler@1.8.2:
     resolution: {integrity: sha512-o/ObKgtMzl8SlpIdzaxFnt7SATKPxu4oIP/1NL+HDJRzxfJcAkOTAb/ZKMRyULbz4q+1t2/DAebs2Z1QairkZw==}
-    dev: true
 
   /@astrojs/compiler@2.1.0:
     resolution: {integrity: sha512-Mp+qrNhly+27bL/Zq8lGeUY+YrdoU0eDfIlAeGIPrzt0PnI/jGpvPUdCaugv4zbCrDkOUScFfcbeEiYumrdJnw==}
@@ -537,7 +542,7 @@ packages:
     dependencies:
       prismjs: 1.29.0
 
-  /@astrojs/react@3.0.2(@types/react-dom@18.2.7)(@types/react@18.2.23)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.5):
+  /@astrojs/react@3.0.2(@types/react-dom@18.2.7)(@types/react@18.2.23)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.9):
     resolution: {integrity: sha512-aooNIuQxTg+IWGMZPuIEwBeBi4/TCPCMsr3714zuLjAjukVd5ZrX/bCNxJqDWU4HNwUm4XFU1OhcEvYOHa5uMQ==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
@@ -548,7 +553,7 @@ packages:
     dependencies:
       '@types/react': 18.2.23
       '@types/react-dom': 18.2.7
-      '@vitejs/plugin-react': 4.0.4(vite@4.4.5)
+      '@vitejs/plugin-react': 4.0.4(vite@4.4.9)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       ultrahtml: 1.5.2
@@ -851,14 +856,6 @@ packages:
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-typescript': 7.22.5(@babel/core@7.23.0)
     dev: true
-
-  /@babel/runtime-corejs3@7.23.1:
-    resolution: {integrity: sha512-OKKfytwoc0tr7cDHwQm0RLVR3y+hDGFz3EPuvLNU/0fOeXJeKNIHj7ffNVFnncWt3sC58uyUCRSzf8nBQbyF6A==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      core-js-pure: 3.32.2
-      regenerator-runtime: 0.14.0
-    dev: false
 
   /@babel/runtime@7.23.1:
     resolution: {integrity: sha512-hC2v6p8ZSI/W0HUzh3V8C5g+NwSKzKPtJwSpTjwl0o297GP9+ZLQSkdvHz46CM3LqyoXxq+5G9komY+eSqSO0g==}
@@ -3213,19 +3210,6 @@ packages:
       path-browserify: 1.0.1
     dev: true
 
-  /@tsconfig/esm@1.0.4:
-    resolution: {integrity: sha512-bix9CWljCxyD06nGQRDYdmTw0wevvEDyrLKjbDocGV31JQYbfqqgMV1yFeJ9aDgorKQ9yDLrak8poiggsB5Liw==}
-    deprecated: Use the tsconfig base for your runtime instead of general 'esm', e.g. 'node18'
-    dev: false
-
-  /@tsconfig/node18@2.0.1:
-    resolution: {integrity: sha512-UqdfvuJK0SArA2CxhKWwwAWfnVSXiYe63bVpMutc27vpngCntGUZQETO24pEJ46zU6XM+7SpqYoMgcO3bM11Ew==}
-    dev: false
-
-  /@tsconfig/strictest@2.0.2:
-    resolution: {integrity: sha512-jt4jIsWKvUvuY6adJnQJlb/UR7DdjC8CjHI/OaSQruj2yX9/K6+KOvDt/vD6udqos/FUk5Op66CvYT7TBLYO5Q==}
-    dev: false
-
   /@types/acorn@4.0.6:
     resolution: {integrity: sha512-veQTnWP+1D/xbxVrPC3zHnCZRjSrKfhbMUlEA43iMZLu7EsnTtkJklIuwrCPbOi8YkvDQAiW05VQQFvvz9oieQ==}
     dependencies:
@@ -3553,6 +3537,22 @@ packages:
       vite: 4.4.5(@types/node@20.6.2)
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@vitejs/plugin-react@4.0.4(vite@4.4.9):
+    resolution: {integrity: sha512-7wU921ABnNYkETiMaZy7XqpueMnpu5VxvVps13MjmCo+utBdD79sZzrApHawHtVX66cCJQQTXFcjH0y9dSUK8g==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: ^4.2.0
+    dependencies:
+      '@babel/core': 7.23.0
+      '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.23.0)
+      '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.23.0)
+      react-refresh: 0.14.0
+      vite: 4.4.9
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
 
   /@vitest/expect@0.34.0:
     resolution: {integrity: sha512-d1ZU0XomWFAFyYIc6uNuY0N8NJIWESyO/6ZmwLvlHZw0GevH4AEEpq178KjXIvSCrbHN0GnzYzitd0yjfy7+Ow==}
@@ -4357,11 +4357,6 @@ packages:
   /cookie@0.5.0:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
-
-  /core-js-pure@3.32.2:
-    resolution: {integrity: sha512-Y2rxThOuNywTjnX/PgA5vWM6CZ9QB9sz9oGeCixV8MqXZO70z/5SHzf9EeBrEBK0PN36DnEBBu9O/aGWzKuMZQ==}
-    requiresBuild: true
-    dev: false
 
   /core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
@@ -6071,10 +6066,6 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /js-base64@3.7.5:
-    resolution: {integrity: sha512-3MEt5DTINKqfScXKfJFrRbxkrnk2AxPWGBL/ycjz4dK8iqiSJ06UxD8jh8xuh6p10TX4t2+7FsBYVxxQbMg+qA==}
-    dev: false
-
   /js-beautify@1.14.9:
     resolution: {integrity: sha512-coM7xq1syLcMyuVGyToxcj2AlzhkDjmfklL8r0JgJ7A76wyGMpJ1oA35mr4APdYNO/o/4YY8H54NQIJzhMbhBg==}
     engines: {node: '>=12'}
@@ -6931,31 +6922,12 @@ packages:
   /mime-db@1.52.0:
     resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
     engines: {node: '>= 0.6'}
-
-  /mime-types@2.1.35:
-    resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
-    engines: {node: '>= 0.6'}
-    dependencies:
-      mime-db: 1.52.0
-    dev: false
+    dev: true
 
   /mime@3.0.0:
     resolution: {integrity: sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==}
     engines: {node: '>=10.0.0'}
     hasBin: true
-
-  /mimetext@3.0.16:
-    resolution: {integrity: sha512-uqtsQ2eNEpqoLUBSGSF6Y9eSbbNNeiknv7M6k5nzcs7M0uWtSjqWINYe6ZY/CowxnVDtNFSX+k9K6IicPboNBg==}
-    dependencies:
-      '@babel/runtime': 7.23.1
-      '@babel/runtime-corejs3': 7.23.1
-      '@tsconfig/esm': 1.0.4
-      '@tsconfig/node18': 2.0.1
-      '@tsconfig/strictest': 2.0.2
-      '@types/node': 20.6.2
-      js-base64: 3.7.5
-      mime-types: 2.1.35
-    dev: false
 
   /mimic-fn@2.1.0:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
@@ -7765,7 +7737,6 @@ packages:
       '@astrojs/compiler': 1.8.2
       prettier: 3.0.2
       sass-formatter: 0.7.8
-    dev: true
 
   /prettier-plugin-svelte@3.0.3(prettier@3.0.2)(svelte@4.0.5):
     resolution: {integrity: sha512-dLhieh4obJEK1hnZ6koxF+tMUrZbV5YGvRpf2+OADyanjya5j0z1Llo8iGwiHmFWZVG/hLEw/AJD5chXd9r3XA==}
@@ -7775,6 +7746,7 @@ packages:
     dependencies:
       prettier: 3.0.2
       svelte: 4.0.5
+    dev: true
 
   /prettier-plugin-tailwindcss@0.5.3(prettier-plugin-astro@0.12.0)(prettier@3.0.2):
     resolution: {integrity: sha512-M5K80V21yM+CTm/FEFYRv9/9LyInYbCSXpIoPAKMm8zy89IOwdiA2e4JVbcO7tvRtAQWz32zdj7/WKcsmFyAVg==}
@@ -7830,7 +7802,6 @@ packages:
     dependencies:
       prettier: 3.0.2
       prettier-plugin-astro: 0.12.0
-    dev: true
 
   /prettier-plugin-tailwindcss@0.5.3(prettier-plugin-svelte@3.0.3)(prettier@3.0.2):
     resolution: {integrity: sha512-M5K80V21yM+CTm/FEFYRv9/9LyInYbCSXpIoPAKMm8zy89IOwdiA2e4JVbcO7tvRtAQWz32zdj7/WKcsmFyAVg==}
@@ -7886,6 +7857,7 @@ packages:
     dependencies:
       prettier: 3.0.2
       prettier-plugin-svelte: 3.0.3(prettier@3.0.2)(svelte@4.0.5)
+    dev: true
 
   /prettier@3.0.2:
     resolution: {integrity: sha512-o2YR9qtniXvwEZlOKbveKfDQVyqxbEIWn48Z8m3ZJjBjcCmUy3xZGIv+7AkaeuaTr6yPXJjwv07ZWlsWbEy1rQ==}
@@ -8437,7 +8409,6 @@ packages:
 
   /s.color@0.0.15:
     resolution: {integrity: sha512-AUNrbEUHeKY8XsYr/DYpl+qk5+aM+DChopnWOPEzn8YKzOhv4l2zH6LzZms3tOZP3wwdOyc0RmTciyi46HLIuA==}
-    dev: true
 
   /sade@1.8.1:
     resolution: {integrity: sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==}
@@ -8465,7 +8436,6 @@ packages:
     resolution: {integrity: sha512-7fI2a8THglflhhYis7k06eUf92VQuJoXzEs2KRP0r1bluFxKFvLx0Ns7c478oYGM0fPfrr846ZRWVi2MAgHt9Q==}
     dependencies:
       suf-log: 2.5.3
-    dev: true
 
   /scheduler@0.23.0:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
@@ -8917,7 +8887,6 @@ packages:
     resolution: {integrity: sha512-KvC8OPjzdNOe+xQ4XWJV2whQA0aM1kGVczMQ8+dStAO6KfEB140JEVQ9dE76ONZ0/Ylf67ni4tILPJB41U0eow==}
     dependencies:
       s.color: 0.0.15
-    dev: true
 
   /supports-color@5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
@@ -9700,6 +9669,10 @@ packages:
       diff: 5.1.0
       kleur: 4.1.5
       sade: 1.8.1
+
+  /valibot@0.17.1:
+    resolution: {integrity: sha512-yfft6fqeB059vNZEdar4tcfU3ZOn4raEec790PTQe1SVfJz5CkZOlMNabkW5MA9Z10SCjUWmxBRz1SMYTGU5yg==}
+    dev: false
 
   /validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
