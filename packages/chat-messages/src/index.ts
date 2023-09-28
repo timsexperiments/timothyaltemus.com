@@ -179,8 +179,9 @@ export function deserializeUser(serialized: string): DeserializedUser {
 
 /** Converts a string to the UInt8 array. */
 export function serializedStringToUInt8(serialized: string) {
-  const uint8 = new Uint8Array(serialized.length);
-  for (let i = 0; i < serialized.length; i++) {
+  const length = serialized?.length ?? 0;
+  const uint8 = new Uint8Array(length);
+  for (let i = 0; i < length; i++) {
     uint8[i] = serialized.charCodeAt(i);
   }
   return uint8;

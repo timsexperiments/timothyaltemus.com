@@ -31,7 +31,7 @@ export class WebSocketServer {
 	}
 
 	get length() {
-		return this.sessions.length;
+		return this.sessions?.length ?? 0;
 	}
 
 	users() {
